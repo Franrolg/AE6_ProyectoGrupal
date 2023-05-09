@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block contenido %}
+<div class="col-md-6 offset-md-3">
+    <h1 class='text-center mt-2 mb-5'> PROVEEDORES </h1>
+    {% if message %}
+        <div class="alert alert-success" role="alert">
+            {{ message }}
+        </div>
+    {% endif %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        {% if form.errors %}
+        <div class="alert alert-warning alert-dismissible fade show mt-2" role="alert">
+            {% for campo in form %}
+                {% if campo.errors %}
+                    {{ campo.errors }}
+                {% endif %}
+            {% endfor %}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endif %}
+        {{ form.as_p }}
+        <div class="d-grid col-md-6 mx-auto">
+            <button type="submit" class="btn btn-secondary mt-4">Confirmar Registro</button>
+        </div>
+    </form>
+</div>
+{% if proveedores %}
+<div class="col-md-10 offset-md-1 mt-4">
+    <h1 class='text-center mt-2 mb-5'>PROVEEDORES REGISTRADOS</h1>
+    
+    <div class="container justify-content-center">
+    <table class="table col-12">
+        <thead>
+          <tr>
+            <th class="col-1" scope="col">#</th>
+            <th class="col-2" scope="col">Nombre</th>
+            <th class="col-3" scope="col">Actividad</th>
+            <th class="col-3" scope="col">Email</th>
+            <th class="col-3" scope="col">Teléfono</th>
+          </tr>
+        </thead>
+
+        <tbody>
+            {% for p in proveedores %}
+            <tr>
+                <th scope="row">{{ forloop.counter }} </th>
+                <td>{{p.nombre}} </td>
+                <td>{{p.actividad}} </td>
+                <td>{{p.email}}</td>
+                <td>{{p.telefono}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+    </div>
+</div>
+{% endif %}
+{% endblock contenido %}
