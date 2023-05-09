@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block contenido %}
+{% if user.is_staff or user.is_superuser %}
 <div class="col-md-6 offset-md-3">
     <h1 class='text-center mt-2 mb-5'> PROVEEDORES </h1>
     {% if message %}
@@ -27,6 +28,7 @@
         </div>
     </form>
 </div>
+{% endif %}
 {% if proveedores %}
 <div class="col-md-10 offset-md-1 mt-4">
     <h1 class='text-center mt-2 mb-5'>PROVEEDORES REGISTRADOS</h1>

@@ -2,6 +2,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.shortcuts import redirect, render
+from django.contrib.auth.decorators import login_required
+
 
 from .forms import FormularioRegistroUsuario, FormularioRegistroProveedor
 from .models import Proveedor
@@ -22,9 +24,9 @@ def cerrar_sesion(request):
     messages.success(request, "¡Has cerrado sesión!")
     return redirect('index')
 
+@login_required()
 def lista_usuarios(request):
     "Vista para renderizar la página donde se mostrarán los datos de usuarios"
-    if not request.user.is_authenticated: return render(request, 'index.html')
     usuarios = User.objects.all()
     return render(request, 'usuarios.html', {'usuarios': usuarios})
 
@@ -38,9 +40,8 @@ def registrar_usuario(request):
         form = FormularioRegistroUsuario()
     return render(request, 'registro_usuario.html', {'form':form})
 
+@login_required()
 def registrar_proveedor(request):
-    if not request.user.is_authenticated: return render(request, 'index.html')
-
     if request.method == 'POST':
         form = FormularioRegistroProveedor(request.POST)
         if form.is_valid():
