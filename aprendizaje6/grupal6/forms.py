@@ -30,6 +30,21 @@ class FormularioRegistroUsuario(UserCreationForm):
         self.fields['password2'].label = ''
         self.fields['password2'].help_text = '<span class="form-text text-muted"><small>Para verificar, introduzca la misma contraseña anterior.</small></span>'
 
+class FormularioRegistroStaff(FormularioRegistroUsuario):
+
+    class Meta:
+        model = User
+        fields = ['username', 'first_name', 'last_name', 'email', 'is_staff', 'is_superuser', 'password1', 'password2']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['is_staff'].label = 'Usuario Staff'
+        self.fields['is_staff'].help_text = '<span class="form-text text-muted"><small>El usuario staff tiene acceso al panel de adminsitración, permisos limitados.</small></span>'
+
+        self.fields['is_superuser'].label = 'Usuario Administrador'
+        self.fields['is_superuser'].help_text = '<span class="form-text text-muted"><small>El usuario administrador tiene acceso total al panel de adminsitración.</small></span>'
+
 class FormularioRegistroProveedor(forms.ModelForm):
     nombre = forms.CharField(label="", max_length=50, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder': 'Nombre'}))
     actividad = forms.CharField(label="", max_length=150, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder': 'Actividad'}))

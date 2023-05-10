@@ -1,11 +1,10 @@
-from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.shortcuts import redirect, render
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import login_required
 
-
-from .forms import FormularioRegistroUsuario, FormularioRegistroProveedor
+from .forms import FormularioRegistroUsuario, FormularioRegistroProveedor, FormularioRegistroStaff
 from .models import Proveedor
 
 def autenticar_usuario(request, usuario, contrasena):
@@ -32,12 +31,14 @@ def lista_usuarios(request):
 
 def registrar_usuario(request):
     if request.method == 'POST':
-        form = FormularioRegistroUsuario(request.POST)
+        form = FormularioRegistroUsuario(request.POST) if not request.user.is_superuser else FormularioRegistroStaff(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save()
+            user.save()
+
             return redirect('usuarios')
     else:
-        form = FormularioRegistroUsuario()
+        form = FormularioRegistroUsuario() if not request.user.is_superuser else FormularioRegistroStaff()
     return render(request, 'registro_usuario.html', {'form':form})
 
 @login_required()
