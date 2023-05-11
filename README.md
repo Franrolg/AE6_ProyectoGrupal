@@ -1,4 +1,4 @@
-# Módulo 6 - Django Grupal 5
+# Módulo 6 - Django Grupal 6
 
 ## Instalar el aplicativo
 
